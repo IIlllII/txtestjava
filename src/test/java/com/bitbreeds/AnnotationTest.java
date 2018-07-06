@@ -17,6 +17,7 @@ package com.bitbreeds; /**
 import org.apache.commons.dbcp2.managed.BasicManagedDataSource;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import javax.validation.ConstraintViolationException;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -173,6 +175,20 @@ public class AnnotationTest {
         assertEquals(Collections.emptyList(),serviceOne.getAll());
     }
 
+    /**
+     * Ignored due to <a href="https://github.com/Netflix/Hystrix/issues/1684">this hystrix bug/feature</a>
+     * Which will cause the validation aspect to never be triggered.
+     */
+    @Ignore
+    @Test
+    public void testAnnotationOrderValidationOnReturnHystrix() {
+        try {
+            serviceOne.invalidReturn("wee");
+        } catch (ConstraintViolationException e) {
+            logger.info("Expected: ",e);
+        }
+        assertEquals(Collections.emptyList(),serviceOne.getAll());
+    }
 
     @Test
     public void testAnnotationOrderValidationOnInput() {

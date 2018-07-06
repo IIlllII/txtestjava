@@ -109,6 +109,19 @@ class ServiceOneImpl implements  ServiceOne{
         return new ReturnPojo(data,null);
     }
 
+
+    @HystrixCommand(commandKey = "returnTest")
+    @Transactional
+    @Override
+    @Valid
+    public ReturnPojo invalidReturn( String data) {
+        HashMap<String, String> args = new HashMap<>();
+        args.put("stuff", "1234");
+        args.put("nm", data);
+        tmpl.update(insert, args);
+        return new ReturnPojo(data,null);
+    }
+
     @Transactional
     @Override
     @Valid

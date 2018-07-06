@@ -40,4 +40,6 @@ public interface ServiceOne {
 
     ReturnPojo insertHystrix(ReturnPojo data);
 
+    ReturnPojo invalidReturn( String data);
+
 }
